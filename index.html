@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Googleカレンダー × LINE リマインダー ご提案</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Helvetica Neue', 'Hiragino Sans', sans-serif; background: #f5f7fa; color: #333; }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #06C755 0%, #00B900 50%, #4CC764 100%);
+    color: #fff;
+    text-align: center;
+    padding: 60px 20px 50px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    left: 0; right: 0;
+    height: 60px;
+    background: #f5f7fa;
+    border-radius: 50% 50% 0 0;
+  }
+  .hero-icon { font-size: 64px; margin-bottom: 16px; }
+  .hero h1 { font-size: 28px; font-weight: 800; margin-bottom: 12px; line-height: 1.4; }
+  .hero p { font-size: 16px; opacity: 0.9; }
+
+  /* Container */
+  .container { max-width: 680px; margin: 0 auto; padding: 0 20px; }
+
+  /* Section */
+  .section { margin: 40px 0; }
+  .section-title {
+    font-size: 20px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 24px;
+    color: #222;
+  }
+  .section-title span {
+    background: linear-gradient(transparent 60%, #b3f0c4 60%);
+    padding: 0 4px;
+  }
+
+  /* Flow cards */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    align-items: center;
+  }
+  .flow-step {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .flow-step .icon { font-size: 48px; margin-bottom: 8px; }
+  .flow-step .label { font-size: 15px; font-weight: 700; color: #333; }
+  .flow-step .sub { font-size: 13px; color: #888; margin-top: 4px; }
+  .flow-arrow {
+    font-size: 32px;
+    color: #06C755;
+    margin: 8px 0;
+  }
+
+  /* Feature cards */
+  .features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .feature-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px 16px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .feature-card .icon { font-size: 40px; margin-bottom: 8px; }
+  .feature-card .title { font-size: 14px; font-weight: 700; }
+
+  /* Check list */
+  .check-section {
+    background: #fff;
+    border-radius: 20px;
+    padding: 32px 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 15px;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-icon { font-size: 28px; flex-shrink: 0; }
+  .check-item .text b { color: #06C755; }
+
+  /* Setup steps */
+  .setup {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    align-items: center;
+  }
+  .setup-step {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px 24px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .setup-num {
+    width: 44px;
+    height: 44px;
+    background: #06C755;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .setup-text { font-size: 15px; font-weight: 600; }
+  .setup-text .sub { font-weight: 400; color: #888; font-size: 13px; display: block; margin-top: 2px; }
+  .setup-arrow {
+    font-size: 24px;
+    color: #ccc;
+    margin: 4px 0;
+  }
+  .setup-time {
+    text-align: center;
+    margin-top: 16px;
+    background: #e8f5e9;
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #2e7d32;
+  }
+  .setup-time .big { font-size: 28px; }
+
+  /* Cost table */
+  .cost-table-wrap {
+    background: #fff;
+    border-radius: 20px;
+    padding: 24px 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    overflow-x: auto;
+  }
+  .cost-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .cost-table th {
+    background: #06C755;
+    color: #fff;
+    padding: 12px 8px;
+    text-align: center;
+    font-weight: 700;
+  }
+  .cost-table th:first-child { border-radius: 8px 0 0 0; }
+  .cost-table th:last-child { border-radius: 0 8px 0 0; }
+  .cost-table td {
+    padding: 12px 8px;
+    text-align: center;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .cost-table tr:nth-child(even) { background: #fafafa; }
+  .cost-table .highlight { background: #e8f5e9; font-weight: 700; }
+  .cost-note {
+    margin-top: 12px;
+    font-size: 12px;
+    color: #888;
+    text-align: center;
+  }
+
+  /* Profit section */
+  .profit-card {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border-radius: 20px;
+    padding: 32px 24px;
+    color: #fff;
+    text-align: center;
+  }
+  .profit-card .subtitle { font-size: 14px; opacity: 0.7; margin-bottom: 8px; }
+  .profit-card .main { font-size: 22px; font-weight: 800; margin-bottom: 20px; }
+  .profit-card .main .accent { color: #4CC764; }
+  .profit-row {
+    display: flex;
+    justify-content: space-around;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .profit-item {
+    text-align: center;
+  }
+  .profit-item .num { font-size: 32px; font-weight: 800; color: #4CC764; }
+  .profit-item .unit { font-size: 14px; opacity: 0.7; }
+  .profit-item .label { font-size: 12px; opacity: 0.5; margin-top: 4px; }
+
+  /* Roadmap */
+  .roadmap {
+    background: #fff;
+    border-radius: 20px;
+    padding: 32px 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .roadmap-item {
+    display: flex;
+    gap: 16px;
+    padding: 20px 0;
+    border-bottom: 1px solid #f0f0f0;
+    align-items: flex-start;
+  }
+  .roadmap-item:last-child { border-bottom: none; }
+  .roadmap-badge {
+    background: #fff3e0;
+    color: #e65100;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .roadmap-content .title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .roadmap-content .desc { font-size: 13px; color: #888; line-height: 1.6; }
+  .roadmap-icon { font-size: 36px; flex-shrink: 0; }
+
+  /* Conclusion */
+  .conclusion {
+    background: #fff;
+    border-radius: 20px;
+    padding: 32px 24px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    border: 3px solid #06C755;
+  }
+  .conclusion .icon { font-size: 48px; margin-bottom: 12px; }
+  .conclusion h3 { font-size: 20px; font-weight: 800; margin-bottom: 12px; color: #06C755; }
+  .conclusion p { font-size: 14px; color: #666; line-height: 1.8; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 12px;
+    color: #aaa;
+  }
+
+  @media (max-width: 480px) {
+    .features { grid-template-columns: 1fr; }
+    .profit-row { flex-direction: column; align-items: center; }
+    .hero h1 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-icon">📅 💬</div>
+  <h1>Googleカレンダー × LINE<br>自動リマインダー</h1>
+  <p>予定を忘れない。毎日がスムーズに。</p>
+</div>
+
+<div class="container">
+
+  <!-- 仕組み -->
+  <div class="section">
+    <div class="section-title"><span>こうやって届きます</span></div>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="icon">📅</div>
+        <div class="label">Googleカレンダー</div>
+        <div class="sub">いつも使っているカレンダーをそのまま</div>
+      </div>
+      <div class="flow-arrow">⬇</div>
+      <div class="flow-step" style="border: 2px solid #06C755;">
+        <div class="icon">⚙️</div>
+        <div class="label">自動で予定を読み取り</div>
+        <div class="sub">あなたの設定したタイミングで</div>
+      </div>
+      <div class="flow-arrow">⬇</div>
+      <div class="flow-step" style="background: #06C755; color: #fff;">
+        <div class="icon">💬</div>
+        <div class="label" style="color:#fff;">LINEにリマインド通知！</div>
+        <div class="sub" style="color:rgba(255,255,255,0.8);">見慣れたLINEだから見逃さない</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- できること -->
+  <div class="section">
+    <div class="section-title"><span>できること</span></div>
+    <div class="features">
+      <div class="feature-card">
+        <div class="icon">🔔</div>
+        <div class="title">リマインド時間を<br>自由に設定</div>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🌅</div>
+        <div class="title">毎朝の<br>予定まとめ通知</div>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🌤️</div>
+        <div class="title">外出予定には<br>天気も一緒に</div>
+      </div>
+      <div class="feature-card">
+        <div class="icon">📝</div>
+        <div class="title">LINEから<br>予定追加もOK</div>
+      </div>
+      <div class="feature-card">
+        <div class="icon">📊</div>
+        <div class="title">週間サマリーで<br>先の予定も把握</div>
+      </div>
+      <div class="feature-card">
+        <div class="icon">⚡</div>
+        <div class="title">重要な予定は<br>複数回リマインド</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 利用者の設定 -->
+  <div class="section">
+    <div class="section-title"><span>はじめかた（たった3ステップ）</span></div>
+    <div class="setup">
+      <div class="setup-step">
+        <div class="setup-num">1</div>
+        <div class="setup-text">LINE Botを友だち追加<span class="sub">QRコードを読むだけ</span></div>
+      </div>
+      <div class="setup-arrow">↓</div>
+      <div class="setup-step">
+        <div class="setup-num">2</div>
+        <div class="setup-text">「カレンダー連携」ボタンを押す<span class="sub">Googleにログインして許可するだけ</span></div>
+      </div>
+      <div class="setup-arrow">↓</div>
+      <div class="setup-step">
+        <div class="setup-num">3</div>
+        <div class="setup-text">通知タイミングを選ぶ<span class="sub">30分前 / 1時間前 / 朝まとめ etc.</span></div>
+      </div>
+    </div>
+    <div class="setup-time">初期設定 <span class="big">約1分</span> で完了</div>
+  </div>
+
+  <!-- 技術的にできる -->
+  <div class="section">
+    <div class="section-title"><span>技術的な確認</span></div>
+    <div class="check-section">
+      <div class="check-item">
+        <div class="check-icon">✅</div>
+        <div class="text">Googleカレンダー連携 → <b>可能</b></div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">✅</div>
+        <div class="text">LINE通知送信 → <b>可能</b></div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">✅</div>
+        <div class="text">各自のリマインド時間設定 → <b>可能</b></div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">✅</div>
+        <div class="text">利用者の設定コスト → <b>ほぼゼロ</b></div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon">✅</div>
+        <div class="text">ユーザー数の上限 → <b>数千人対応可</b></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- コスト -->
+  <div class="section">
+    <div class="section-title"><span>かかる費用</span></div>
+    <div class="cost-table-wrap">
+      <table class="cost-table">
+        <tr>
+          <th>項目</th>
+          <th>費用</th>
+          <th>備考</th>
+        </tr>
+        <tr>
+          <td>サーバー</td>
+          <td><b>0円</b></td>
+          <td>既存VPS利用</td>
+        </tr>
+        <tr>
+          <td>Google API</td>
+          <td><b>0円</b></td>
+          <td>無料枠で十分</td>
+        </tr>
+        <tr>
+          <td>開発環境</td>
+          <td><b>0円</b></td>
+          <td>Python + 既存環境</td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="height: 16px;"></div>
+
+    <div class="cost-table-wrap">
+      <table class="cost-table">
+        <tr>
+          <th>LINEプラン</th>
+          <th>月額</th>
+          <th>メッセージ数</th>
+          <th>対応人数目安</th>
+        </tr>
+        <tr>
+          <td>コミュニケーション</td>
+          <td><b>0円</b></td>
+          <td>200通</td>
+          <td>〜2人</td>
+        </tr>
+        <tr class="highlight">
+          <td>ライト</td>
+          <td><b>5,000円</b></td>
+          <td>5,000通</td>
+          <td>〜55人</td>
+        </tr>
+        <tr>
+          <td>スタンダード</td>
+          <td><b>15,000円</b></td>
+          <td>30,000通</td>
+          <td>〜330人</td>
+        </tr>
+      </table>
+      <div class="cost-note">※ 1人あたり月約90通（朝まとめ+リマインド）で計算<br>※ 通知頻度を抑えれば、ライトプランで100人以上も可能</div>
+    </div>
+  </div>
+
+  <!-- 収益 -->
+  <div class="section">
+    <div class="profit-card">
+      <div class="subtitle">月額500円 × ユーザー数 の場合</div>
+      <div class="main"><span class="accent">10人</span> で元が取れる</div>
+      <div class="profit-row">
+        <div class="profit-item">
+          <div class="num">10人</div>
+          <div class="unit">5,000円/月</div>
+          <div class="label">LINE代ペイ</div>
+        </div>
+        <div class="profit-item">
+          <div class="num">30人</div>
+          <div class="unit">15,000円/月</div>
+          <div class="label">利益1万円</div>
+        </div>
+        <div class="profit-item">
+          <div class="num">100人</div>
+          <div class="unit">50,000円/月</div>
+          <div class="label">利益4.5万円</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 今後の機能追加 -->
+  <div class="section">
+    <div class="section-title"><span>今後の機能追加予定</span></div>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-icon">👨‍👩‍👧‍👦</div>
+        <div class="roadmap-content">
+          <div class="title">家族間カレンダー共有</div>
+          <div class="desc">家族メンバーを招待して、予定を共有。<br>家族全員のLINEにまとめてリマインド通知が届きます。</div>
+        </div>
+        <div class="roadmap-badge">予定</div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-icon">📸</div>
+        <div class="roadmap-content">
+          <div class="title">画像から予定を自動登録</div>
+          <div class="desc">チラシ・お知らせ・スクショなどの画像をLINEに送るだけ。<br>AIが日付と時間を読み取り、Googleカレンダーに自動登録します。</div>
+        </div>
+        <div class="roadmap-badge">予定</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 結論 -->
+  <div class="section">
+    <div class="conclusion">
+      <div class="icon">🚀</div>
+      <h3>作れます。</h3>
+      <p>
+        技術的にすべて実現可能。<br>
+        利用者の設定も1分で完了。<br>
+        ランニングコストはLINE通数のみ。<br><br>
+        <b>10人集まれば黒字化できる<br>低リスクなアプリです。</b>
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Googleカレンダー × LINE リマインダー アプリ ご提案資料
+</div>
+
+</body>
+</html>
