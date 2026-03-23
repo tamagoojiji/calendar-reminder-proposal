@@ -8,7 +8,6 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Helvetica Neue', 'Hiragino Sans', sans-serif; background: #f5f7fa; color: #333; }
 
-  /* Hero */
   .hero {
     background: linear-gradient(135deg, #06C755 0%, #00B900 50%, #4CC764 100%);
     color: #fff;
@@ -30,10 +29,8 @@
   .hero h1 { font-size: 28px; font-weight: 800; margin-bottom: 12px; line-height: 1.4; }
   .hero p { font-size: 16px; opacity: 0.9; }
 
-  /* Container */
   .container { max-width: 680px; margin: 0 auto; padding: 0 20px; }
 
-  /* Section */
   .section { margin: 40px 0; }
   .section-title {
     font-size: 20px;
@@ -47,7 +44,6 @@
     padding: 0 4px;
   }
 
-  /* Flow cards */
   .flow {
     display: flex;
     flex-direction: column;
@@ -66,13 +62,8 @@
   .flow-step .icon { font-size: 48px; margin-bottom: 8px; }
   .flow-step .label { font-size: 15px; font-weight: 700; color: #333; }
   .flow-step .sub { font-size: 13px; color: #888; margin-top: 4px; }
-  .flow-arrow {
-    font-size: 32px;
-    color: #06C755;
-    margin: 8px 0;
-  }
+  .flow-arrow { font-size: 32px; color: #06C755; margin: 8px 0; }
 
-  /* Feature cards */
   .features {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -88,7 +79,6 @@
   .feature-card .icon { font-size: 40px; margin-bottom: 8px; }
   .feature-card .title { font-size: 14px; font-weight: 700; }
 
-  /* Check list */
   .check-section {
     background: #fff;
     border-radius: 20px;
@@ -107,7 +97,6 @@
   .check-icon { font-size: 28px; flex-shrink: 0; }
   .check-item .text b { color: #06C755; }
 
-  /* Setup steps */
   .setup {
     display: flex;
     flex-direction: column;
@@ -139,11 +128,7 @@
   }
   .setup-text { font-size: 15px; font-weight: 600; }
   .setup-text .sub { font-weight: 400; color: #888; font-size: 13px; display: block; margin-top: 2px; }
-  .setup-arrow {
-    font-size: 24px;
-    color: #ccc;
-    margin: 4px 0;
-  }
+  .setup-arrow { font-size: 24px; color: #ccc; margin: 4px 0; }
   .setup-time {
     text-align: center;
     margin-top: 16px;
@@ -156,7 +141,6 @@
   }
   .setup-time .big { font-size: 28px; }
 
-  /* Cost table */
   .cost-table-wrap {
     background: #fff;
     border-radius: 20px;
@@ -192,7 +176,6 @@
     text-align: center;
   }
 
-  /* Profit section */
   .profit-card {
     background: linear-gradient(135deg, #1a1a2e, #16213e);
     border-radius: 20px;
@@ -209,14 +192,11 @@
     gap: 12px;
     margin-top: 16px;
   }
-  .profit-item {
-    text-align: center;
-  }
+  .profit-item { text-align: center; }
   .profit-item .num { font-size: 32px; font-weight: 800; color: #4CC764; }
   .profit-item .unit { font-size: 14px; opacity: 0.7; }
   .profit-item .label { font-size: 12px; opacity: 0.5; margin-top: 4px; }
 
-  /* Roadmap */
   .roadmap {
     background: #fff;
     border-radius: 20px;
@@ -246,7 +226,80 @@
   .roadmap-content .desc { font-size: 13px; color: #888; line-height: 1.6; }
   .roadmap-icon { font-size: 36px; flex-shrink: 0; }
 
-  /* Conclusion */
+  .plan-section {
+    background: #fff;
+    border-radius: 20px;
+    padding: 32px 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .plan-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .plan-card {
+    border-radius: 16px;
+    padding: 24px 16px;
+    text-align: center;
+  }
+  .plan-card.plan-a {
+    background: linear-gradient(135deg, #06C755, #00B900);
+    color: #fff;
+  }
+  .plan-card.plan-b {
+    background: #f0f4ff;
+    border: 2px solid #4a6cf7;
+    color: #333;
+  }
+  .plan-card .plan-icon { font-size: 40px; margin-bottom: 8px; }
+  .plan-card .plan-name { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+  .plan-card.plan-a .plan-name { color: #fff; }
+  .plan-card.plan-b .plan-name { color: #4a6cf7; }
+  .plan-card .plan-price { font-size: 13px; margin-bottom: 12px; opacity: 0.85; }
+  .plan-card .plan-detail { font-size: 12px; text-align: left; line-height: 1.8; }
+  .plan-card.plan-a .plan-detail { color: rgba(255,255,255,0.9); }
+
+  .plan-compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+  .plan-compare-table th {
+    padding: 10px 6px;
+    text-align: center;
+    font-weight: 700;
+    border-bottom: 2px solid #e0e0e0;
+    font-size: 13px;
+  }
+  .plan-compare-table th:first-child { text-align: left; }
+  .plan-compare-table td {
+    padding: 10px 6px;
+    text-align: center;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .plan-compare-table td:first-child { text-align: left; font-weight: 600; }
+  .plan-compare-table .th-a { color: #06C755; }
+  .plan-compare-table .th-b { color: #4a6cf7; }
+
+  .plan-note {
+    background: #fffde7;
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 16px;
+    font-size: 13px;
+    line-height: 1.8;
+    color: #555;
+  }
+  .plan-note b { color: #e65100; }
+  .plan-note .note-title {
+    font-weight: 800;
+    color: #333;
+    margin-bottom: 4px;
+    font-size: 14px;
+  }
+
   .conclusion {
     background: #fff;
     border-radius: 20px;
@@ -259,7 +312,6 @@
   .conclusion h3 { font-size: 20px; font-weight: 800; margin-bottom: 12px; color: #06C755; }
   .conclusion p { font-size: 14px; color: #666; line-height: 1.8; }
 
-  /* Footer */
   .footer {
     text-align: center;
     padding: 40px 20px;
@@ -269,6 +321,7 @@
 
   @media (max-width: 480px) {
     .features { grid-template-columns: 1fr; }
+    .plan-cards { grid-template-columns: 1fr; }
     .profit-row { flex-direction: column; align-items: center; }
     .hero h1 { font-size: 22px; }
   }
@@ -276,7 +329,6 @@
 </head>
 <body>
 
-<!-- Hero -->
 <div class="hero">
   <div class="hero-icon">📅 💬</div>
   <h1>Googleカレンダー × LINE<br>自動リマインダー</h1>
@@ -340,7 +392,7 @@
     </div>
   </div>
 
-  <!-- 利用者の設定 -->
+  <!-- はじめかた -->
   <div class="section">
     <div class="section-title"><span>はじめかた（たった3ステップ）</span></div>
     <div class="setup">
@@ -362,7 +414,7 @@
     <div class="setup-time">初期設定 <span class="big">約1分</span> で完了</div>
   </div>
 
-  <!-- 技術的にできる -->
+  <!-- 技術確認 -->
   <div class="section">
     <div class="section-title"><span>技術的な確認</span></div>
     <div class="check-section">
@@ -389,9 +441,91 @@
     </div>
   </div>
 
-  <!-- コスト -->
+  <!-- 2つの使い方 -->
   <div class="section">
-    <div class="section-title"><span>かかる費用</span></div>
+    <div class="section-title"><span>2つの使い方</span></div>
+    <div class="plan-section">
+
+      <div class="plan-cards">
+        <div class="plan-card plan-a">
+          <div class="plan-icon">🎯</div>
+          <div class="plan-name">おまかせプラン</div>
+          <div class="plan-price">月額利用料あり</div>
+          <div class="plan-detail">
+            ・友だち追加するだけ<br>
+            ・設定も運用もすべてお任せ<br>
+            ・すぐ使い始められる
+          </div>
+        </div>
+        <div class="plan-card plan-b">
+          <div class="plan-icon">🔧</div>
+          <div class="plan-name">自分で運用プラン</div>
+          <div class="plan-price">月額コスト 0円</div>
+          <div class="plan-detail">
+            ・自分で公式LINEを作成<br>
+            ・LINE無料枠（200通/月）で運用<br>
+            ・家族5人でも月額0円
+          </div>
+        </div>
+      </div>
+
+      <table class="plan-compare-table">
+        <tr>
+          <th></th>
+          <th class="th-a">おまかせ</th>
+          <th class="th-b">自分で運用</th>
+        </tr>
+        <tr>
+          <td>初期設定</td>
+          <td>友だち追加のみ</td>
+          <td>公式LINE作成が必要</td>
+        </tr>
+        <tr>
+          <td>月額コスト</td>
+          <td>利用料あり</td>
+          <td><b>0円</b></td>
+        </tr>
+        <tr>
+          <td>LINE通数</td>
+          <td>共有（人数で変動）</td>
+          <td>自分専用200通/月</td>
+        </tr>
+        <tr>
+          <td>家族利用（5人）</td>
+          <td>5人分の通数消費</td>
+          <td><b>200通で十分</b></td>
+        </tr>
+        <tr>
+          <td>設定サポート</td>
+          <td>不要</td>
+          <td><b>全面サポートあり</b></td>
+        </tr>
+      </table>
+
+      <div class="plan-note">
+        <div class="note-title">💡 自分で運用プランについて</div>
+        ご自身で公式LINEアカウントを作成していただく形です。<br>
+        <b>初期設定はこちらで全面サポート</b>しますので、手順で困ることはありません。<br><br>
+        公式LINEの無料枠（月200通）は、1人なら1ヶ月たっぷり使えます。<br>
+        ご家族5人で共有しても、1日1〜2通程度なので<b>無料枠で十分</b>です。<br><br>
+        また、<b>公式LINEの操作に慣れる良い練習にもなります</b>。<br>
+        ビジネスで公式LINEを使いたい方にとって、実際に触りながら学べる機会です。
+      </div>
+
+      <div class="plan-note" style="background: #fce4ec; margin-top: 12px;">
+        <div class="note-title">⚠️ おまかせプランのコストについて</div>
+        おまかせプランでは、全ユーザーの通知を1つの公式LINEから送信します。<br>
+        そのため、<b>利用者が増えるほどLINE通数のコストが発生</b>します。<br><br>
+        自分で運用プランの場合、このコストは<b>一切かかりません</b>。<br>
+        各自が自分の無料枠で運用するため、何人増えてもこちらの負担は0円です。
+      </div>
+    </div>
+  </div>
+
+  <!-- コスト（おまかせプラン） -->
+  <div class="section">
+    <div class="section-title"><span>おまかせプランの費用構造</span></div>
+
     <div class="cost-table-wrap">
       <table class="cost-table">
         <tr>
@@ -402,7 +536,7 @@
         <tr>
           <td>サーバー</td>
           <td><b>0円</b></td>
-          <td>既存VPS利用</td>
+          <td>既存環境を利用</td>
         </tr>
         <tr>
           <td>Google API</td>
@@ -410,9 +544,9 @@
           <td>無料枠で十分</td>
         </tr>
         <tr>
-          <td>開発環境</td>
+          <td>開発・保守</td>
           <td><b>0円</b></td>
-          <td>Python + 既存環境</td>
+          <td>こちらで対応</td>
         </tr>
       </table>
     </div>
@@ -446,14 +580,18 @@
           <td>〜330人</td>
         </tr>
       </table>
-      <div class="cost-note">※ 1人あたり月約90通（朝まとめ+リマインド）で計算<br>※ 通知頻度を抑えれば、ライトプランで100人以上も可能</div>
+      <div class="cost-note">
+        ※ 1人あたり月約90通（朝まとめ+リマインド）で計算<br>
+        ※ おまかせプランの場合、利用者が増えるほどこのコストが発生します<br>
+        ※ 自分で運用プランの場合、この費用は一切かかりません
+      </div>
     </div>
   </div>
 
   <!-- 収益 -->
   <div class="section">
     <div class="profit-card">
-      <div class="subtitle">月額500円 × ユーザー数 の場合</div>
+      <div class="subtitle">おまかせプラン 月額500円 × ユーザー数 の場合</div>
       <div class="main"><span class="accent">10人</span> で元が取れる</div>
       <div class="profit-row">
         <div class="profit-item">
