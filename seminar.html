@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>公式LINE × Googleカレンダー連携 勉強会</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Helvetica Neue', 'Hiragino Sans', sans-serif; background: #f5f7fa; color: #333; }
+
+  /* ===== Hero ===== */
+  .hero {
+    background: linear-gradient(135deg, #06C755 0%, #00B900 50%, #4CC764 100%);
+    color: #fff;
+    text-align: center;
+    padding: 50px 20px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    left: 0; right: 0;
+    height: 60px;
+    background: #f5f7fa;
+    border-radius: 50% 50% 0 0;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.25);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .hero-icon { font-size: 56px; margin-bottom: 12px; }
+  .hero h1 { font-size: 26px; font-weight: 800; line-height: 1.5; margin-bottom: 10px; }
+  .hero .sub { font-size: 15px; opacity: 0.9; }
+
+  .container { max-width: 680px; margin: 0 auto; padding: 0 20px; }
+
+  /* ===== Section ===== */
+  .section { margin: 40px 0; }
+  .section-title {
+    font-size: 20px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 24px;
+    color: #222;
+  }
+  .section-title span {
+    background: linear-gradient(transparent 60%, #b3f0c4 60%);
+    padding: 0 4px;
+  }
+
+  /* ===== Pain / あるある ===== */
+  .pain-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .pain-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px 14px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .pain-card .icon { font-size: 40px; margin-bottom: 8px; }
+  .pain-card .text { font-size: 13px; font-weight: 600; line-height: 1.6; color: #555; }
+
+  /* ===== Arrow divider ===== */
+  .arrow-divider {
+    text-align: center;
+    font-size: 36px;
+    color: #06C755;
+    margin: 24px 0;
+  }
+
+  /* ===== Solution card ===== */
+  .solution-card {
+    background: linear-gradient(135deg, #06C755, #00B900);
+    border-radius: 20px;
+    padding: 32px 24px;
+    text-align: center;
+    color: #fff;
+  }
+  .solution-card .icon { font-size: 48px; margin-bottom: 8px; }
+  .solution-card .main { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+  .solution-card .sub { font-size: 14px; opacity: 0.9; }
+
+  /* ===== Theme cards ===== */
+  .theme-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .theme-card {
+    border-radius: 20px;
+    padding: 28px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .theme-card.theme-1 {
+    background: linear-gradient(135deg, #06C755, #4CC764);
+    color: #fff;
+  }
+  .theme-card.theme-2 {
+    background: linear-gradient(135deg, #4285F4, #34A5F8);
+    color: #fff;
+  }
+  .theme-card .num {
+    font-size: 48px;
+    font-weight: 900;
+    opacity: 0.2;
+    position: absolute;
+    top: 8px;
+    right: 14px;
+  }
+  .theme-card .icon { font-size: 44px; margin-bottom: 10px; }
+  .theme-card .title { font-size: 16px; font-weight: 800; margin-bottom: 6px; }
+  .theme-card .desc { font-size: 12px; opacity: 0.9; line-height: 1.6; }
+
+  /* ===== Flow (3 step) ===== */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .flow-step {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px 24px;
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .flow-step .icon { font-size: 44px; margin-bottom: 6px; }
+  .flow-step .label { font-size: 15px; font-weight: 700; }
+  .flow-step .sub { font-size: 12px; color: #888; margin-top: 4px; }
+  .flow-step.active { border: 3px solid #06C755; }
+  .flow-step.highlight-green { background: #06C755; color: #fff; }
+  .flow-step.highlight-green .sub { color: rgba(255,255,255,0.8); }
+  .flow-arrow { font-size: 28px; color: #06C755; margin: 6px 0; }
+
+  /* ===== Feature grid ===== */
+  .features {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+  .feature-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px 12px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .feature-card .icon { font-size: 36px; margin-bottom: 6px; }
+  .feature-card .title { font-size: 12px; font-weight: 700; line-height: 1.5; }
+
+  /* ===== LINE mockup ===== */
+  .line-mock {
+    background: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    max-width: 360px;
+    margin: 0 auto;
+  }
+  .line-mock-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 16px;
+  }
+  .line-mock-header .avatar {
+    width: 36px; height: 36px;
+    background: #06C755;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  .line-mock-header .name { font-size: 14px; font-weight: 700; }
+  .line-bubble {
+    background: #06C755;
+    color: #fff;
+    border-radius: 18px 18px 18px 4px;
+    padding: 14px 18px;
+    font-size: 13px;
+    line-height: 1.8;
+    margin-bottom: 10px;
+    max-width: 85%;
+  }
+  .line-bubble .time-label {
+    font-size: 11px;
+    opacity: 0.7;
+    margin-bottom: 4px;
+  }
+  .line-bubble b { font-size: 14px; }
+
+  /* ===== Future / Option ===== */
+  .future-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 28px 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    margin-bottom: 16px;
+  }
+  .future-card .badge {
+    display: inline-block;
+    background: #fff3e0;
+    color: #e65100;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  .future-card .title-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .future-card .title-row .icon { font-size: 40px; }
+  .future-card .title-row .text { font-size: 17px; font-weight: 800; }
+  .future-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .future-flow-step {
+    background: #f5f7fa;
+    border-radius: 12px;
+    padding: 14px 16px;
+    text-align: center;
+    min-width: 80px;
+  }
+  .future-flow-step .icon { font-size: 28px; }
+  .future-flow-step .label { font-size: 11px; font-weight: 600; margin-top: 4px; }
+  .future-flow-arrow { font-size: 20px; color: #ccc; }
+
+  /* ===== Program / Timeline ===== */
+  .program {
+    background: #fff;
+    border-radius: 20px;
+    padding: 28px 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .program-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .program-item:last-child { border-bottom: none; }
+  .program-time {
+    background: #06C755;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: 50px;
+    text-align: center;
+  }
+  .program-time.blue { background: #4285F4; }
+  .program-time.orange { background: #FF9800; }
+  .program-time.purple { background: #9C27B0; }
+  .program-icon { font-size: 28px; flex-shrink: 0; }
+  .program-text { font-size: 14px; font-weight: 600; }
+  .program-text .sub { font-weight: 400; color: #888; font-size: 12px; display: block; margin-top: 2px; }
+
+  /* ===== Target ===== */
+  .target-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .target-item {
+    background: #fff;
+    border-radius: 16px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .target-item .icon { font-size: 32px; flex-shrink: 0; }
+  .target-item .text { font-size: 14px; font-weight: 600; }
+
+  /* ===== Goal ===== */
+  .goal-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .goal-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px 16px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    border-top: 4px solid #06C755;
+  }
+  .goal-card .icon { font-size: 40px; margin-bottom: 8px; }
+  .goal-card .text { font-size: 13px; font-weight: 700; line-height: 1.6; }
+
+  /* ===== CTA / Question ===== */
+  .question-card {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border-radius: 20px;
+    padding: 32px 24px;
+    text-align: center;
+    color: #fff;
+  }
+  .question-card .icon { font-size: 48px; margin-bottom: 12px; }
+  .question-card .main { font-size: 20px; font-weight: 800; margin-bottom: 16px; line-height: 1.5; }
+  .question-card .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  .question-card .option {
+    background: rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .question-card .option .emoji { font-size: 24px; }
+
+  /* ===== CTA button ===== */
+  .cta-section {
+    text-align: center;
+    margin: 40px 0;
+  }
+  .cta-section .icon { font-size: 48px; margin-bottom: 12px; }
+  .cta-section .text {
+    font-size: 18px;
+    font-weight: 800;
+    color: #06C755;
+    margin-bottom: 8px;
+  }
+  .cta-section .sub { font-size: 13px; color: #888; }
+
+  .footer {
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 12px;
+    color: #aaa;
+  }
+
+  @media (max-width: 480px) {
+    .pain-grid { grid-template-columns: 1fr 1fr; }
+    .features { grid-template-columns: 1fr 1fr; }
+    .theme-cards { grid-template-columns: 1fr; }
+    .goal-cards { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 22px; }
+    .future-flow { flex-direction: column; }
+    .future-flow-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="hero-badge">コミュニティ勉強会</div>
+  <div class="hero-icon">📅💬</div>
+  <h1>公式LINE ×<br>Googleカレンダー連携<br>勉強会</h1>
+  <div class="sub">文字ナシ！図で見てわかる45分</div>
+</div>
+
+<div class="container">
+
+  <!-- ===== 2つのテーマ ===== -->
+  <div class="section">
+    <div class="section-title"><span>勉強会の2テーマ</span></div>
+    <div class="theme-cards">
+      <div class="theme-card theme-1">
+        <div class="num">1</div>
+        <div class="icon">💬</div>
+        <div class="title">公式LINEを<br>使えるようになる</div>
+        <div class="desc">アカウント作成から<br>基本操作まで</div>
+      </div>
+      <div class="theme-card theme-2">
+        <div class="num">2</div>
+        <div class="icon">🔗</div>
+        <div class="title">Googleカレンダーと<br>連携する</div>
+        <div class="desc">予定→LINE通知の<br>仕組みを体験</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 仕組み（フロー図） ===== -->
+  <div class="section">
+    <div class="section-title"><span>こうやって届きます</span></div>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="icon">📅</div>
+        <div class="label">Googleカレンダーに予定を入れる</div>
+        <div class="sub">いつも通り</div>
+      </div>
+      <div class="flow-arrow">⬇</div>
+      <div class="flow-step active">
+        <div class="icon">⚙️</div>
+        <div class="label">自動で予定を読み取り</div>
+        <div class="sub">設定したタイミングで</div>
+      </div>
+      <div class="flow-arrow">⬇</div>
+      <div class="flow-step highlight-green">
+        <div class="icon">💬</div>
+        <div class="label">LINEにリマインド通知！</div>
+        <div class="sub">いつものLINEだから見逃さない</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== LINEモック ===== -->
+  <div class="section">
+    <div class="section-title"><span>こんな感じで届きます</span></div>
+    <div class="line-mock">
+      <div class="line-mock-header">
+        <div class="avatar">📅</div>
+        <div class="name">カレンダーリマインダー</div>
+      </div>
+      <div class="line-bubble">
+        <div class="time-label">🌅 おはようございます！</div>
+        <b>今日の予定</b><br><br>
+        🕐 10:00　歯医者（○○クリニック）<br>
+        🕐 14:00　参観日（△△小学校）<br>
+        🕐 16:00　ピアノ教室（送迎）<br><br>
+      </div>
+      <div class="line-bubble" style="background: #e8f5e9; color: #333; border-radius: 18px 18px 18px 4px;">
+        <div class="time-label" style="color: #888;">⏰ 30分前リマインド</div>
+        <b style="color: #06C755;">まもなく！</b><br>
+        🕐 10:00　歯医者（○○クリニック）<br>
+        📍 駅前ビル3F
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== メイン機能：リマインダー ===== -->
+  <div class="section">
+    <div class="section-title"><span>できること</span></div>
+    <div class="features">
+      <div class="feature-card">
+        <div class="icon">🌅</div>
+        <div class="title">毎朝<br>まとめ通知</div>
+      </div>
+      <div class="feature-card">
+        <div class="icon">⏰</div>
+        <div class="title">○分前<br>リマインド</div>
+      </div>
+      <div class="feature-card">
+        <div class="icon">📝</div>
+        <div class="title">LINEから<br>予定追加<br><span style="font-size:10px;color:#e65100;font-weight:800;">今後搭載予定</span></div>
+      </div>
+      <div class="feature-card">
+        <div class="icon">📊</div>
+        <div class="title">週間<br>サマリー</div>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🔁</div>
+        <div class="title">重要予定は<br>複数回通知</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== はじめかた ===== -->
+  <div class="section">
+    <div class="section-title"><span>はじめかた（4ステップ）</span></div>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="icon">💬</div>
+        <div class="label">❶ 公式LINEアカウントを作成</div>
+        <div class="sub">各自で無料アカウントを作ります</div>
+      </div>
+      <div class="flow-arrow">⬇</div>
+      <div class="flow-step">
+        <div class="icon">🤖</div>
+        <div class="label">❷ Botと連携</div>
+        <div class="sub">各自でBot設定を行います</div>
+      </div>
+      <div class="flow-arrow">⬇</div>
+      <div class="flow-step active">
+        <div class="icon">🔗</div>
+        <div class="label">❸ カレンダー同期アプリと連携</div>
+        <div class="sub">こちらが作成したアプリで簡単に連携</div>
+      </div>
+      <div class="flow-arrow">⬇</div>
+      <div class="flow-step">
+        <div class="icon">🔔</div>
+        <div class="label">❹ 通知タイミングを選ぶ</div>
+        <div class="sub">30分前 / 1時間前 / 朝まとめ</div>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:16px; background:#fff3e0; border-radius:12px; padding:14px; color:#e65100;">
+      <span style="font-weight:800; font-size:15px;">❶❷は少し手こずるポイント</span><br>
+      <span style="font-size:13px;">→ 勉強会で一緒にやるのでご安心を！</span>
+    </div>
+  </div>
+
+  <!-- ===== 今後のオプション：写真→カレンダー ===== -->
+  <div class="section">
+    <div class="section-title"><span>今後やりたいこと</span></div>
+    <div class="future-card">
+      <div class="badge">今後のオプション</div>
+      <div class="title-row">
+        <div class="icon">📸</div>
+        <div class="text">写真を撮るだけで<br>予定がカレンダーに入る</div>
+      </div>
+      <div class="future-flow">
+        <div class="future-flow-step">
+          <div class="icon">📄</div>
+          <div class="label">プリント・チラシ</div>
+        </div>
+        <div class="future-flow-arrow">→</div>
+        <div class="future-flow-step">
+          <div class="icon">📸</div>
+          <div class="label">LINEで撮影</div>
+        </div>
+        <div class="future-flow-arrow">→</div>
+        <div class="future-flow-step">
+          <div class="icon">🤖</div>
+          <div class="label">AIが文字起こし</div>
+        </div>
+        <div class="future-flow-arrow">→</div>
+        <div class="future-flow-step">
+          <div class="icon">📅</div>
+          <div class="label">カレンダーに<br>自動登録</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 勉強会プログラム ===== -->
+  <div class="section">
+    <div class="section-title"><span>当日の流れ（約40分）</span></div>
+    <div class="program">
+      <div class="program-item">
+        <div class="program-time">10分</div>
+        <div class="program-icon">💬</div>
+        <div class="program-text">公式LINEを作ってみよう<span class="sub">その場でアカウント作成</span></div>
+      </div>
+      <div class="program-item">
+        <div class="program-time blue">5分</div>
+        <div class="program-icon">🔗</div>
+        <div class="program-text">仕組みの説明<span class="sub">カレンダー→LINE通知の流れ</span></div>
+      </div>
+      <div class="program-item">
+        <div class="program-time blue">5分</div>
+        <div class="program-icon">📱</div>
+        <div class="program-text">ライブデモ<span class="sub">実際に通知が届くところを体験</span></div>
+      </div>
+      <div class="program-item">
+        <div class="program-time orange">5分</div>
+        <div class="program-icon">✨</div>
+        <div class="program-text">できること紹介<span class="sub">6つの機能をサクッと紹介</span></div>
+      </div>
+      <div class="program-item">
+        <div class="program-time orange">5分</div>
+        <div class="program-icon">📸</div>
+        <div class="program-text">今後のオプション紹介<span class="sub">写真→カレンダー登録のイメージ</span></div>
+      </div>
+      <div class="program-item">
+        <div class="program-time purple">10分</div>
+        <div class="program-icon">🙋‍♀️</div>
+        <div class="program-text">みんなに聞いてみたい！<span class="sub">使いたい？写真機能ほしい？</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== こんな人にオススメ ===== -->
+  <div class="section">
+    <div class="section-title"><span>こんな人にオススメ</span></div>
+    <div class="target-list">
+      <div class="target-item">
+        <div class="icon">💬</div>
+        <div class="text">公式LINEって何？ちょっと触ってみたい</div>
+      </div>
+      <div class="target-item">
+        <div class="icon">🗓️</div>
+        <div class="text">予定を忘れがち…リマインドがほしい</div>
+      </div>
+      <div class="target-item">
+        <div class="icon">📄</div>
+        <div class="text">プリントや書類の管理が苦手</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ゴール ===== -->
+  <div class="section">
+    <div class="section-title"><span>勉強会のゴール</span></div>
+    <div class="goal-cards">
+      <div class="goal-card">
+        <div class="icon">💬</div>
+        <div class="text">公式LINE<br>アカウントが<br>作れる</div>
+      </div>
+      <div class="goal-card">
+        <div class="icon">🔗</div>
+        <div class="text">カレンダー連携の<br>仕組みが<br>わかる</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== みんなに聞きたい ===== -->
+  <div class="section">
+    <div class="question-card">
+      <div class="icon">🙋‍♀️</div>
+      <div class="main">みんなに聞きたい！</div>
+      <div class="options">
+        <div class="option">
+          <div class="emoji">📅</div>
+          カレンダー連携、使ってみたい？
+        </div>
+        <div class="option">
+          <div class="emoji">📸</div>
+          写真→予定登録、あったら便利？
+        </div>
+        <div class="option">
+          <div class="emoji">💡</div>
+          他にこんな機能ほしい！
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CTA ===== -->
+  <div class="cta-section">
+    <div class="icon">🚀</div>
+    <div class="text">予定を忘れない毎日へ</div>
+    <div class="sub">一緒にやってみましょう！</div>
+  </div>
+
+</div>
+
+<div class="footer">
+  公式LINE × Googleカレンダー連携 勉強会資料
+</div>
+
+</body>
+</html>
